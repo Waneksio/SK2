@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/matt/CLionProjects/sk2/Entity.cpp" "/home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles/sk2.dir/Entity.cpp.o"
-  "/home/matt/CLionProjects/sk2/Food.cpp" "/home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles/sk2.dir/Food.cpp.o"
-  "/home/matt/CLionProjects/sk2/Player.cpp" "/home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles/sk2.dir/Player.cpp.o"
-  "/home/matt/CLionProjects/sk2/Position.cpp" "/home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles/sk2.dir/Position.cpp.o"
-  "/home/matt/CLionProjects/sk2/main.cpp" "/home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles/sk2.dir/main.cpp.o"
+  "/home/matt/CLionProjects/SK2/Entity.cpp" "/home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles/sk2.dir/Entity.cpp.o"
+  "/home/matt/CLionProjects/SK2/Food.cpp" "/home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles/sk2.dir/Food.cpp.o"
+  "/home/matt/CLionProjects/SK2/Player.cpp" "/home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles/sk2.dir/Player.cpp.o"
+  "/home/matt/CLionProjects/SK2/Position.cpp" "/home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles/sk2.dir/Position.cpp.o"
+  "/home/matt/CLionProjects/SK2/main.cpp" "/home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles/sk2.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

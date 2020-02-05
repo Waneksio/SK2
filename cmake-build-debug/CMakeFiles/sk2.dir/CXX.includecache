@@ -6,10 +6,28 @@
 
 #IncludeRegexTransform: 
 
-/home/matt/CLionProjects/sk2/main.cpp
+/home/matt/CLionProjects/SK2/Entity.h
+Position.h
+/home/matt/CLionProjects/SK2/Position.h
+
+/home/matt/CLionProjects/SK2/Player.h
+Position.h
+/home/matt/CLionProjects/SK2/Position.h
+Entity.h
+/home/matt/CLionProjects/SK2/Entity.h
+string
+-
+
+/home/matt/CLionProjects/SK2/Position.h
+cmath
+-
+
+/home/matt/CLionProjects/SK2/main.cpp
 unistd.h
 -
 errno.h
+-
+string
 -
 netinet/in.h
 -
@@ -28,5 +46,9 @@ iostream
 vector
 -
 fcntl.h
+-
+Player.h
+/home/matt/CLionProjects/SK2/Player.h
+cstring
 -
 

@@ -43,10 +43,10 @@ RM = /home/matt/Desktop/clion-2019.1.3/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/matt/CLionProjects/sk2
+CMAKE_SOURCE_DIR = /home/matt/CLionProjects/SK2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/matt/CLionProjects/sk2/cmake-build-debug
+CMAKE_BINARY_DIR = /home/matt/CLionProjects/SK2/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/sk2.dir/depend.make
@@ -59,68 +59,68 @@ include CMakeFiles/sk2.dir/flags.make
 
 CMakeFiles/sk2.dir/main.cpp.o: CMakeFiles/sk2.dir/flags.make
 CMakeFiles/sk2.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/sk2.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sk2.dir/main.cpp.o -c /home/matt/CLionProjects/sk2/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/sk2.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sk2.dir/main.cpp.o -c /home/matt/CLionProjects/SK2/main.cpp
 
 CMakeFiles/sk2.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sk2.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/matt/CLionProjects/sk2/main.cpp > CMakeFiles/sk2.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/matt/CLionProjects/SK2/main.cpp > CMakeFiles/sk2.dir/main.cpp.i
 
 CMakeFiles/sk2.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sk2.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matt/CLionProjects/sk2/main.cpp -o CMakeFiles/sk2.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matt/CLionProjects/SK2/main.cpp -o CMakeFiles/sk2.dir/main.cpp.s
 
 CMakeFiles/sk2.dir/Player.cpp.o: CMakeFiles/sk2.dir/flags.make
 CMakeFiles/sk2.dir/Player.cpp.o: ../Player.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/sk2.dir/Player.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sk2.dir/Player.cpp.o -c /home/matt/CLionProjects/sk2/Player.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/sk2.dir/Player.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sk2.dir/Player.cpp.o -c /home/matt/CLionProjects/SK2/Player.cpp
 
 CMakeFiles/sk2.dir/Player.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sk2.dir/Player.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/matt/CLionProjects/sk2/Player.cpp > CMakeFiles/sk2.dir/Player.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/matt/CLionProjects/SK2/Player.cpp > CMakeFiles/sk2.dir/Player.cpp.i
 
 CMakeFiles/sk2.dir/Player.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sk2.dir/Player.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matt/CLionProjects/sk2/Player.cpp -o CMakeFiles/sk2.dir/Player.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matt/CLionProjects/SK2/Player.cpp -o CMakeFiles/sk2.dir/Player.cpp.s
 
 CMakeFiles/sk2.dir/Entity.cpp.o: CMakeFiles/sk2.dir/flags.make
 CMakeFiles/sk2.dir/Entity.cpp.o: ../Entity.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/sk2.dir/Entity.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sk2.dir/Entity.cpp.o -c /home/matt/CLionProjects/sk2/Entity.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/sk2.dir/Entity.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sk2.dir/Entity.cpp.o -c /home/matt/CLionProjects/SK2/Entity.cpp
 
 CMakeFiles/sk2.dir/Entity.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sk2.dir/Entity.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/matt/CLionProjects/sk2/Entity.cpp > CMakeFiles/sk2.dir/Entity.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/matt/CLionProjects/SK2/Entity.cpp > CMakeFiles/sk2.dir/Entity.cpp.i
 
 CMakeFiles/sk2.dir/Entity.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sk2.dir/Entity.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matt/CLionProjects/sk2/Entity.cpp -o CMakeFiles/sk2.dir/Entity.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matt/CLionProjects/SK2/Entity.cpp -o CMakeFiles/sk2.dir/Entity.cpp.s
 
 CMakeFiles/sk2.dir/Position.cpp.o: CMakeFiles/sk2.dir/flags.make
 CMakeFiles/sk2.dir/Position.cpp.o: ../Position.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/sk2.dir/Position.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sk2.dir/Position.cpp.o -c /home/matt/CLionProjects/sk2/Position.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/sk2.dir/Position.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sk2.dir/Position.cpp.o -c /home/matt/CLionProjects/SK2/Position.cpp
 
 CMakeFiles/sk2.dir/Position.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sk2.dir/Position.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/matt/CLionProjects/sk2/Position.cpp > CMakeFiles/sk2.dir/Position.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/matt/CLionProjects/SK2/Position.cpp > CMakeFiles/sk2.dir/Position.cpp.i
 
 CMakeFiles/sk2.dir/Position.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sk2.dir/Position.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matt/CLionProjects/sk2/Position.cpp -o CMakeFiles/sk2.dir/Position.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matt/CLionProjects/SK2/Position.cpp -o CMakeFiles/sk2.dir/Position.cpp.s
 
 CMakeFiles/sk2.dir/Food.cpp.o: CMakeFiles/sk2.dir/flags.make
 CMakeFiles/sk2.dir/Food.cpp.o: ../Food.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/sk2.dir/Food.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sk2.dir/Food.cpp.o -c /home/matt/CLionProjects/sk2/Food.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/sk2.dir/Food.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sk2.dir/Food.cpp.o -c /home/matt/CLionProjects/SK2/Food.cpp
 
 CMakeFiles/sk2.dir/Food.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sk2.dir/Food.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/matt/CLionProjects/sk2/Food.cpp > CMakeFiles/sk2.dir/Food.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/matt/CLionProjects/SK2/Food.cpp > CMakeFiles/sk2.dir/Food.cpp.i
 
 CMakeFiles/sk2.dir/Food.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sk2.dir/Food.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matt/CLionProjects/sk2/Food.cpp -o CMakeFiles/sk2.dir/Food.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matt/CLionProjects/SK2/Food.cpp -o CMakeFiles/sk2.dir/Food.cpp.s
 
 # Object files for target sk2
 sk2_OBJECTS = \
@@ -140,7 +140,7 @@ sk2: CMakeFiles/sk2.dir/Position.cpp.o
 sk2: CMakeFiles/sk2.dir/Food.cpp.o
 sk2: CMakeFiles/sk2.dir/build.make
 sk2: CMakeFiles/sk2.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable sk2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable sk2"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/sk2.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -153,6 +153,6 @@ CMakeFiles/sk2.dir/clean:
 .PHONY : CMakeFiles/sk2.dir/clean
 
 CMakeFiles/sk2.dir/depend:
-	cd /home/matt/CLionProjects/sk2/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/matt/CLionProjects/sk2 /home/matt/CLionProjects/sk2 /home/matt/CLionProjects/sk2/cmake-build-debug /home/matt/CLionProjects/sk2/cmake-build-debug /home/matt/CLionProjects/sk2/cmake-build-debug/CMakeFiles/sk2.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/matt/CLionProjects/SK2/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/matt/CLionProjects/SK2 /home/matt/CLionProjects/SK2 /home/matt/CLionProjects/SK2/cmake-build-debug /home/matt/CLionProjects/SK2/cmake-build-debug /home/matt/CLionProjects/SK2/cmake-build-debug/CMakeFiles/sk2.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/sk2.dir/depend
 

@@ -7,6 +7,7 @@
 
 #include "Position.h"
 #include "Entity.h"
+#include <string>
 
 
 class Player : Entity{
@@ -15,6 +16,8 @@ public:
     int mSize;
     Player(int fd, Position position);
     void move(int xShift, int yShift);
+    std::string getCoordinates();
+    int getCoordinatesLen();
 };
 
 

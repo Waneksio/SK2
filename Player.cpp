@@ -13,3 +13,19 @@ void Player::move(int xShift, int yShift) {
     mPosition.mx += xShift;
     mPosition.my += yShift;
 }
+
+std::string Player::getCoordinates() {
+    std::string coordinates = std::string();
+    std::string xCoordinate = std::to_string(mPosition.mx);
+    std::string yCoordinate = std::to_string(mPosition.my);
+    coordinates.append(xCoordinate);
+    coordinates.append(" ");
+    coordinates.append(yCoordinate);
+    coordinates.append("\nV ");
+    return coordinates;
+}
+
+int Player::getCoordinatesLen() {
+
+    return sizeof(getCoordinates().length());
+}
