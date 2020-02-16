@@ -4,9 +4,10 @@
 
 #include "Player.h"
 
-Player::Player(int fd, Position position) : Entity(position) {
+Player::Player(int fd, Position position, int id) : Entity(position) {
     mFileDescriptor = fd;
     mSize = 1;
+    mId = id;
 }
 
 void Player::move(int xShift, int yShift) {
@@ -21,11 +22,19 @@ std::string Player::getCoordinates() {
     coordinates.append(xCoordinate);
     coordinates.append(" ");
     coordinates.append(yCoordinate);
-    coordinates.append("\nV ");
     return coordinates;
 }
 
 int Player::getCoordinatesLen() {
 
-    return sizeof(getCoordinates().length());
+    return sizeof(getCoordinates().data());
+}
+
+std::string Player::getId() {
+    std::string result = std::to_string(mId);
+    return result;
+}
+
+int Player::getIdLen() {
+    return sizeof(getId().data());
 }

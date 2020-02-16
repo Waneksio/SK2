@@ -14,9 +14,12 @@ class Player : Entity{
 public:
     int mFileDescriptor;
     int mSize;
-    Player(int fd, Position position);
+    int mId;
+    Player(int fd, Position position, int id);
     void move(int xShift, int yShift);
     std::string getCoordinates();
+    std::string getId();
+    int getIdLen();
     int getCoordinatesLen();
 };
 

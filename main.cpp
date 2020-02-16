@@ -16,6 +16,9 @@
 const int one = 1;
 std::vector<Player *> players = std::vector<Player *>();
 
+void sendPositions(int fileDescriptor);
+
+void addPlayer(int fileDescriptor);
 
 int main(int argc, char ** argv) {
     if(argc!=2)
@@ -53,8 +56,9 @@ int main(int argc, char ** argv) {
             int client_fd = accept(servSock, nullptr, nullptr);
             if (client_fd != -1) {
                 fcntl(client_fd, F_SETFL, O_NONBLOCK, 1);
-                players.emplace_back(new Player(client_fd, Position(0, 0)));
-                write(players.back()->mFileDescriptor, "V ", 3);
+                addPlayer(client_fd);
+                Player * currentPlayer = players.back();
+                write(currentPlayer->mFileDescriptor, currentPlayer->getId().data(), currentPlayer->getIdLen());
             }
         }
         for (Player * player : players) {
@@ -66,11 +70,40 @@ int main(int argc, char ** argv) {
                 int position = message.find(" ");
                 std::string xShift = message.substr(0, position);
                 std::string yShift = message.substr(position + 1, message.size());
-                player->move(std::stoi(xShift), std::stoi(yShift));
-                write(player->mFileDescriptor, player->getCoordinates().data(), player->getCoordinatesLen());
+                if (xShift.length() == 0 || yShift.length() == 0)
+                    player->move(10, 10);
+                else
+                    player->move(std::stoi(xShift), std::stoi(yShift));
+                sendPositions(player->mFileDescriptor);
                 memset(buffer, 0, sizeof(buffer));
             }
         }
         sleep(1);
+    }
+}
+
+void sendPositions(int fileDescriptor) {
+    for (Player * player : players) {
+        std::string message = player->getId().data();
+        message.append(" ");
+        message.append(player->getCoordinates().data());
+        write(fileDescriptor, message.data(), sizeof(message.data()));
+    }
+    write(fileDescriptor, "end", 3);
+}
+
+void addPlayer(int fileDescriptor) {
+    for (int id = 1; id < 11; id++) {
+        bool skip = false;
+        for (Player * player : players) {
+            if (player->mId == id) {
+                skip = true;
+                break;
+            }
+        }
+        if (skip)
+            continue;
+        players.emplace_back(new Player(fileDescriptor, Position(0, 0), id));
+        break;
     }
 }
