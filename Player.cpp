@@ -22,19 +22,12 @@ std::string Player::getCoordinates() {
     coordinates.append(xCoordinate);
     coordinates.append(" ");
     coordinates.append(yCoordinate);
+    coordinates.append(" ");
+    coordinates.append(std::to_string(mSize));
     return coordinates;
-}
-
-int Player::getCoordinatesLen() {
-
-    return sizeof(getCoordinates().data());
 }
 
 std::string Player::getId() {
     std::string result = std::to_string(mId);
     return result;
-}
-
-int Player::getIdLen() {
-    return sizeof(getId().data());
 }

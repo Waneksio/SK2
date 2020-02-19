@@ -15,6 +15,7 @@
 
 const int one = 1;
 std::vector<Player *> players = std::vector<Player *>();
+std::string endMessage = std::string("end");
 
 void sendPositions(int fileDescriptor);
 
@@ -54,11 +55,16 @@ int main(int argc, char ** argv) {
     while (true) {
         if (event.events & EPOLLIN && event.data.fd == servSock) {
             int client_fd = accept(servSock, nullptr, nullptr);
+
             if (client_fd != -1) {
                 fcntl(client_fd, F_SETFL, O_NONBLOCK, 1);
                 addPlayer(client_fd);
+
                 Player * currentPlayer = players.back();
-                write(currentPlayer->mFileDescriptor, currentPlayer->getId().data(), currentPlayer->getIdLen());
+                std::string message = currentPlayer->getId();
+
+                std::cout << message << "\n";
+                write(currentPlayer->mFileDescriptor, message.data(), message.length());
             }
         }
         for (Player * player : players) {
@@ -78,7 +84,6 @@ int main(int argc, char ** argv) {
                 memset(buffer, 0, sizeof(buffer));
             }
         }
-        sleep(1);
     }
 }
 
@@ -87,13 +92,15 @@ void sendPositions(int fileDescriptor) {
         std::string message = player->getId().data();
         message.append(" ");
         message.append(player->getCoordinates().data());
-        write(fileDescriptor, message.data(), sizeof(message.data()));
+        write(fileDescriptor, message.data(), message.length());
+        usleep(25000);
     }
-    write(fileDescriptor, "end", 3);
+    write(fileDescriptor, endMessage.data(), endMessage.length());
+    usleep(50);
 }
 
 void addPlayer(int fileDescriptor) {
-    for (int id = 1; id < 11; id++) {
+    for (int id = 0; id < 10; id++) {
         bool skip = false;
         for (Player * player : players) {
             if (player->mId == id) {
