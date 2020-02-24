@@ -10,7 +10,7 @@
 #include <string>
 
 
-class Player : Entity{
+class Player : public Entity{
 public:
     int mFileDescriptor;
     int mSize;
@@ -18,9 +18,6 @@ public:
     Player(int fd, Position position, int id);
     void move(int xShift, int yShift);
     std::string getCoordinates();
-    std::string getId();
-    int getIdLen();
-    int getCoordinatesLen();
 };
 
 

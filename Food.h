@@ -8,7 +8,7 @@
 
 #include "Entity.h"
 
-class Food : Entity{
+class Food : public Entity{
 public:
     Food(Position position) : Entity(position) {};
 };

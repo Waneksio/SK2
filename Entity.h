@@ -12,6 +12,8 @@ class Entity {
 public:
     Position mPosition;
     Entity(Position position) : mPosition(position) {};
+    int getX();
+    int getY();
 };
 
 

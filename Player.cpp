@@ -26,8 +26,3 @@ std::string Player::getCoordinates() {
     coordinates.append(std::to_string(mSize));
     return coordinates;
 }
-
-std::string Player::getId() {
-    std::string result = std::to_string(mId);
-    return result;
-}

@@ -19,6 +19,7 @@ CMakeFiles/sk2.dir/Position.cpp.o: ../Position.cpp
 CMakeFiles/sk2.dir/Position.cpp.o: ../Position.h
 
 CMakeFiles/sk2.dir/main.cpp.o: ../Entity.h
+CMakeFiles/sk2.dir/main.cpp.o: ../Food.h
 CMakeFiles/sk2.dir/main.cpp.o: ../Player.h
 CMakeFiles/sk2.dir/main.cpp.o: ../Position.h
 CMakeFiles/sk2.dir/main.cpp.o: ../main.cpp

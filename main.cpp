@@ -10,16 +10,28 @@
 #include <iostream>
 #include <vector>
 #include <fcntl.h>
-#include "Player.h"
 #include <cstring>
+#include "Player.h"
+#include "Food.h"
 
 const int one = 1;
 std::vector<Player *> players = std::vector<Player *>();
+std::vector<Food *> snacks = std::vector<Food *>();
 std::string endMessage = std::string("end");
+int boardWidth = 1000;
+int boardLength = 1000;
+char buffer[1024];
+char sendingBuffer[1024];
 
 void sendPositions(int fileDescriptor);
 
 void addPlayer(int fileDescriptor);
+
+bool isEaten(Player * player);
+
+void eatFood(Player * player);
+
+void spawnFood(int spawnRate);
 
 int main(int argc, char ** argv) {
     if(argc!=2)
@@ -50,7 +62,8 @@ int main(int argc, char ** argv) {
 
     int resultCount = epoll_wait(fd, &event, 1, -1);
 
-    char buffer[1024];
+    int xShift = 0;
+    int yShift = 0;
 
     while (true) {
         if (event.events & EPOLLIN && event.data.fd == servSock) {
@@ -61,41 +74,76 @@ int main(int argc, char ** argv) {
                 addPlayer(client_fd);
 
                 Player * currentPlayer = players.back();
-                std::string message = currentPlayer->getId();
+                memcpy(&sendingBuffer[0], &currentPlayer->mId, sizeof(currentPlayer->mId));
 
-                std::cout << message << "\n";
-                write(currentPlayer->mFileDescriptor, message.data(), message.length());
+                write(currentPlayer->mFileDescriptor, buffer, sizeof(currentPlayer->mId));
+                memset(buffer, 0, sizeof(buffer));
             }
         }
         for (Player * player : players) {
             int count = read(player->mFileDescriptor, buffer, sizeof(buffer) + 1);
+
             if (count <= 0)
                 continue;
-            std::string message(buffer);
-            if (!message.empty()){
-                int position = message.find(" ");
-                std::string xShift = message.substr(0, position);
-                std::string yShift = message.substr(position + 1, message.size());
-                if (xShift.length() == 0 || yShift.length() == 0)
-                    player->move(10, 10);
-                else
-                    player->move(std::stoi(xShift), std::stoi(yShift));
-                sendPositions(player->mFileDescriptor);
-                memset(buffer, 0, sizeof(buffer));
+
+            int readIndex = 0;
+            memcpy(&xShift, &buffer[readIndex], sizeof(xShift));
+            readIndex += sizeof(xShift);
+            memcpy(&yShift, &buffer[readIndex], sizeof(yShift));
+            player->move(xShift, yShift);
+
+            if (isEaten(player)) {
+                player->mSize = 0;
             }
+
+            eatFood(player);
+            sendPositions(player->mFileDescriptor);
+            memset(buffer, 0, sizeof(buffer));
         }
+        if (snacks.size() > 1000)
+            spawnFood(1);
     }
 }
 
 void sendPositions(int fileDescriptor) {
+    int writeIndex;
+    int xShift;
+    int yShift;
+    int empty = 0;
+    bool end;
     for (Player * player : players) {
-        std::string message = player->getId().data();
-        message.append(" ");
-        message.append(player->getCoordinates().data());
-        write(fileDescriptor, message.data(), message.length());
-        usleep(25000);
+        writeIndex = 0;
+        xShift = player->getX();
+        yShift = player->getY();
+        end = false;
+        memcpy(&sendingBuffer[writeIndex], &player->mId, sizeof(player->mId));
+        writeIndex += sizeof(player->mId);
+        memcpy(&sendingBuffer[writeIndex], &xShift, sizeof(xShift));
+        writeIndex += sizeof(xShift);
+        memcpy(&sendingBuffer[writeIndex], &yShift, sizeof(yShift));
+        writeIndex += sizeof(yShift);
+        memcpy(&sendingBuffer[writeIndex], &player->mSize, sizeof(player->mSize));
+        writeIndex += sizeof(player->mSize);
+        memcpy(&sendingBuffer[writeIndex], &end, sizeof(end));
+        writeIndex += sizeof(end);
+        write(fileDescriptor, sendingBuffer, writeIndex);
+        memset(sendingBuffer, 0, sizeof(sendingBuffer));
+        usleep(15000);
     }
-    write(fileDescriptor, endMessage.data(), endMessage.length());
+    writeIndex = 0;
+    end = true;
+    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
+    writeIndex += sizeof(empty);
+    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
+    writeIndex += sizeof(empty);
+    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
+    writeIndex += sizeof(empty);
+    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
+    writeIndex += sizeof(empty);
+    memcpy(&sendingBuffer[writeIndex], &end, sizeof(end));
+    writeIndex += sizeof(end);
+    write(fileDescriptor, sendingBuffer, writeIndex);
+    memset(sendingBuffer, 0, sizeof(sendingBuffer));
     usleep(50);
 }
 
@@ -113,4 +161,27 @@ void addPlayer(int fileDescriptor) {
         players.emplace_back(new Player(fileDescriptor, Position(0, 0), id));
         break;
     }
+}
+
+bool isEaten(Player * player) {
+    for (Player * anotherPlayer : players) {
+        if ((player->getX() - anotherPlayer->getX()) ^ 2 + (player->getY() - anotherPlayer->getY()) ^ 2 <= anotherPlayer->mSize ^ 2) {
+            anotherPlayer->mSize += player->mSize;
+            return true;
+        }
+    }
+    return false;
+}
+
+void eatFood(Player * player) {
+    for (Food * food : snacks) {
+        if (((food->getX() - player->getX() ^ 2) + (food->getY() - player->getY()) ^ 2) <= player->mSize) {
+            player->mSize += 1;
+            delete food;
+        }
+    }
+}
+
+void spawnFood(int spawnRate) {
+    // TODO: spawn food
 }

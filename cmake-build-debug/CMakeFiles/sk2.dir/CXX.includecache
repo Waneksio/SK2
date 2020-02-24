@@ -10,6 +10,10 @@
 Position.h
 /home/matt/CLionProjects/SK2/Position.h
 
+/home/matt/CLionProjects/SK2/Food.h
+Entity.h
+/home/matt/CLionProjects/SK2/Entity.h
+
 /home/matt/CLionProjects/SK2/Player.h
 Position.h
 /home/matt/CLionProjects/SK2/Position.h
@@ -47,8 +51,10 @@ vector
 -
 fcntl.h
 -
-Player.h
-/home/matt/CLionProjects/SK2/Player.h
 cstring
 -
+Player.h
+/home/matt/CLionProjects/SK2/Player.h
+Food.h
+/home/matt/CLionProjects/SK2/Food.h
 
