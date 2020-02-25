@@ -61,10 +61,10 @@ int main(int argc, char ** argv) {
     epoll_ctl(fd, EPOLL_CTL_ADD, servSock, &event);
 
     int resultCount = epoll_wait(fd, &event, 1, -1);
+    std::cout << resultCount << "\n";
 
     int xShift = 0;
     int yShift = 0;
-
     while (true) {
         if (event.events & EPOLLIN && event.data.fd == servSock) {
             int client_fd = accept(servSock, nullptr, nullptr);
@@ -73,18 +73,29 @@ int main(int argc, char ** argv) {
                 fcntl(client_fd, F_SETFL, O_NONBLOCK, 1);
                 addPlayer(client_fd);
 
-                Player * currentPlayer = players.back();
+                Player *currentPlayer = players.back();
                 memcpy(&sendingBuffer[0], &currentPlayer->mId, sizeof(currentPlayer->mId));
 
                 write(currentPlayer->mFileDescriptor, buffer, sizeof(currentPlayer->mId));
                 memset(buffer, 0, sizeof(buffer));
             }
         }
-        for (Player * player : players) {
+        for (auto i = players.begin(); i != players.end(); i++) {
+            if (*i == nullptr)
+                break;
+            Player *player = *i;
             int count = read(player->mFileDescriptor, buffer, sizeof(buffer) + 1);
 
-            if (count <= 0)
-                continue;
+            if (count <= 0) {
+                player->timeToLive -= 1;
+                if (player->timeToLive <= 0) {
+                    close(player->mFileDescriptor);
+                    delete player;
+                    players.erase(i);
+                    continue;
+                }
+            } else
+                player->timeToLive = 10;
 
             int readIndex = 0;
             memcpy(&xShift, &buffer[readIndex], sizeof(xShift));
@@ -111,7 +122,7 @@ void sendPositions(int fileDescriptor) {
     int yShift;
     int empty = 0;
     bool end;
-    for (Player * player : players) {
+    for (Player *player : players) {
         writeIndex = 0;
         xShift = player->getX();
         yShift = player->getY();
@@ -126,7 +137,10 @@ void sendPositions(int fileDescriptor) {
         writeIndex += sizeof(player->mSize);
         memcpy(&sendingBuffer[writeIndex], &end, sizeof(end));
         writeIndex += sizeof(end);
-        write(fileDescriptor, sendingBuffer, writeIndex);
+        if (-1 == write(fileDescriptor, sendingBuffer, writeIndex)) {
+            memset(sendingBuffer, 0, sizeof(sendingBuffer));
+            return;
+        }
         memset(sendingBuffer, 0, sizeof(sendingBuffer));
         usleep(15000);
     }
@@ -142,7 +156,10 @@ void sendPositions(int fileDescriptor) {
     writeIndex += sizeof(empty);
     memcpy(&sendingBuffer[writeIndex], &end, sizeof(end));
     writeIndex += sizeof(end);
-    write(fileDescriptor, sendingBuffer, writeIndex);
+    if (-1 == write(fileDescriptor, sendingBuffer, writeIndex)) {
+        memset(sendingBuffer, 0, sizeof(sendingBuffer));
+        return;
+    }
     memset(sendingBuffer, 0, sizeof(sendingBuffer));
     usleep(50);
 }

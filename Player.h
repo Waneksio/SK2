@@ -15,9 +15,9 @@ public:
     int mFileDescriptor;
     int mSize;
     int mId;
+    int timeToLive;
     Player(int fd, Position position, int id);
     void move(int xShift, int yShift);
-    std::string getCoordinates();
 };
 
 
