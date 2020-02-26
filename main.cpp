@@ -196,16 +196,15 @@ bool isEaten(Player *player) {
 }
 
 void eatFood(Player *player) {
-    for (auto it = snacks.begin(); it != snacks.end(); it++) {
+    for (auto it = snacks.begin(); it != snacks.end(); ++it) {
         Food *food = *it;
         if (food != nullptr) {
+            player->getX();
+            food->getX();
             if ((((food->getX() - player->getX()) ^ 2) + ((food->getY() - player->getY()) ^ 2)) <= (player->mSize ^ 2)) {
                 player->mSize += 1;
-                it = snacks.erase(it);
-                continue;
             }
         }
-        continue;
     }
 }
 
