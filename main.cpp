@@ -11,15 +11,17 @@
 #include <vector>
 #include <fcntl.h>
 #include <cstring>
+#include <time.h>
+#include <stdlib.h>
 #include "Player.h"
 #include "Food.h"
 
 const int one = 1;
 std::vector<Player *> players = std::vector<Player *>();
 std::vector<Food *> snacks = std::vector<Food *>();
-std::string endMessage = std::string("end");
 int boardWidth = 1000;
 int boardLength = 1000;
+int maxSpawnRate = 10;
 char buffer[1024];
 char sendingBuffer[1024];
 
@@ -27,17 +29,18 @@ void sendPositions(int fileDescriptor);
 
 void addPlayer(int fileDescriptor);
 
-bool isEaten(Player * player);
+bool isEaten(Player *player);
 
-void eatFood(Player * player);
+void eatFood(Player *player);
 
 void spawnFood(int spawnRate);
 
-int main(int argc, char ** argv) {
-    if(argc!=2)
-        error(1,0,"Usage: %s <port>", argv[0]);
+int main(int argc, char **argv) {
+    srand(time(NULL));
+    if (argc != 2)
+        error(1, 0, "Usage: %s <port>", argv[0]);
 
-    sockaddr_in localAddress {
+    sockaddr_in localAddress{
             .sin_family = AF_INET,
             .sin_port   = htons(atoi(argv[1])),
             .sin_addr   = {htonl(INADDR_ANY)}
@@ -47,8 +50,8 @@ int main(int argc, char ** argv) {
     fcntl(servSock, F_SETFL, O_NONBLOCK, 1);
     setsockopt(servSock, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
 
-    if(bind(servSock, (sockaddr*) &localAddress, sizeof(localAddress)))
-        error(1,errno,"Bind failed!");
+    if (bind(servSock, (sockaddr *) &localAddress, sizeof(localAddress)))
+        error(1, errno, "Bind failed!");
 
     listen(servSock, 10);
 
@@ -111,8 +114,8 @@ int main(int argc, char ** argv) {
             sendPositions(player->mFileDescriptor);
             memset(buffer, 0, sizeof(buffer));
         }
-        if (snacks.size() > 1000)
-            spawnFood(1);
+        if (snacks.size() < 1000)
+            spawnFood(2);
     }
 }
 
@@ -167,7 +170,7 @@ void sendPositions(int fileDescriptor) {
 void addPlayer(int fileDescriptor) {
     for (int id = 0; id < 10; id++) {
         bool skip = false;
-        for (Player * player : players) {
+        for (Player *player : players) {
             if (player->mId == id) {
                 skip = true;
                 break;
@@ -180,9 +183,11 @@ void addPlayer(int fileDescriptor) {
     }
 }
 
-bool isEaten(Player * player) {
-    for (Player * anotherPlayer : players) {
-        if ((player->getX() - anotherPlayer->getX()) ^ 2 + (player->getY() - anotherPlayer->getY()) ^ 2 <= anotherPlayer->mSize ^ 2) {
+bool isEaten(Player *player) {
+    for (Player *anotherPlayer : players) {
+        if (player->mFileDescriptor == anotherPlayer->mFileDescriptor)
+            continue;
+        if (((player->getX() - anotherPlayer->getX()) ^ 2) + ((player->getY() - anotherPlayer->getY()) ^ 2) <= (anotherPlayer->mSize ^ 2)) {
             anotherPlayer->mSize += player->mSize;
             return true;
         }
@@ -190,15 +195,24 @@ bool isEaten(Player * player) {
     return false;
 }
 
-void eatFood(Player * player) {
-    for (Food * food : snacks) {
-        if (((food->getX() - player->getX() ^ 2) + (food->getY() - player->getY()) ^ 2) <= player->mSize) {
-            player->mSize += 1;
-            delete food;
+void eatFood(Player *player) {
+    for (auto it = snacks.begin(); it != snacks.end(); it++) {
+        Food *food = *it;
+        if (food != nullptr) {
+            if ((((food->getX() - player->getX()) ^ 2) + ((food->getY() - player->getY()) ^ 2)) <= (player->mSize ^ 2)) {
+                player->mSize += 1;
+                it = snacks.erase(it);
+                continue;
+            }
         }
+        continue;
     }
 }
 
 void spawnFood(int spawnRate) {
-    // TODO: spawn food
+    if (rand() % maxSpawnRate < spawnRate) {
+        int randomX = rand() % boardWidth + 1;
+        int randomY = rand() % boardLength + 1;
+        snacks.emplace_back(new Food(Position(randomX, randomY)));
+    }
 }

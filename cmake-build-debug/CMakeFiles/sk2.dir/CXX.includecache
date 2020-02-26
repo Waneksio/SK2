@@ -53,6 +53,10 @@ fcntl.h
 -
 cstring
 -
+time.h
+-
+stdlib.h
+-
 Player.h
 /home/matt/CLionProjects/SK2/Player.h
 Food.h
