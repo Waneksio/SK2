@@ -24,6 +24,7 @@ int boardLength = 1000;
 int maxSpawnRate = 10;
 char buffer[1024];
 char sendingBuffer[1024];
+bool newSnack = false;
 
 void sendPositions(int fileDescriptor);
 
@@ -34,6 +35,12 @@ bool isEaten(Player *player);
 void eatFood(Player *player);
 
 void spawnFood(int spawnRate);
+
+void sendPlayerPosition(Player * player, int fileDescriptor);
+
+void sendEndOfPipe(int fileDescriptor);
+
+void sendSnackPosition(int fileDescriptor, Food * snack);
 
 int main(int argc, char **argv) {
     srand(time(NULL));
@@ -77,13 +84,16 @@ int main(int argc, char **argv) {
                 addPlayer(client_fd);
 
                 Player *currentPlayer = players.back();
+                for (Food * food : snacks) {
+                    sendSnackPosition(currentPlayer->mFileDescriptor, food);
+                }
                 memcpy(&sendingBuffer[0], &currentPlayer->mId, sizeof(currentPlayer->mId));
 
                 write(currentPlayer->mFileDescriptor, buffer, sizeof(currentPlayer->mId));
                 memset(buffer, 0, sizeof(buffer));
             }
         }
-        for (auto i = players.begin(); i != players.end(); i++) {
+        for (auto i = players.begin(); i != players.end(); ++i) {
             if (*i == nullptr)
                 break;
             Player *player = *i;
@@ -114,56 +124,21 @@ int main(int argc, char **argv) {
             sendPositions(player->mFileDescriptor);
             memset(buffer, 0, sizeof(buffer));
         }
+        newSnack = false;
         if (snacks.size() < 1000)
             spawnFood(2);
     }
 }
 
 void sendPositions(int fileDescriptor) {
-    int writeIndex;
-    int xShift;
-    int yShift;
-    int empty = 0;
-    bool end;
     for (Player *player : players) {
-        writeIndex = 0;
-        xShift = player->getX();
-        yShift = player->getY();
-        end = false;
-        memcpy(&sendingBuffer[writeIndex], &player->mId, sizeof(player->mId));
-        writeIndex += sizeof(player->mId);
-        memcpy(&sendingBuffer[writeIndex], &xShift, sizeof(xShift));
-        writeIndex += sizeof(xShift);
-        memcpy(&sendingBuffer[writeIndex], &yShift, sizeof(yShift));
-        writeIndex += sizeof(yShift);
-        memcpy(&sendingBuffer[writeIndex], &player->mSize, sizeof(player->mSize));
-        writeIndex += sizeof(player->mSize);
-        memcpy(&sendingBuffer[writeIndex], &end, sizeof(end));
-        writeIndex += sizeof(end);
-        if (-1 == write(fileDescriptor, sendingBuffer, writeIndex)) {
-            memset(sendingBuffer, 0, sizeof(sendingBuffer));
-            return;
-        }
-        memset(sendingBuffer, 0, sizeof(sendingBuffer));
+        sendPlayerPosition(player, fileDescriptor);
         usleep(15000);
     }
-    writeIndex = 0;
-    end = true;
-    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
-    writeIndex += sizeof(empty);
-    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
-    writeIndex += sizeof(empty);
-    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
-    writeIndex += sizeof(empty);
-    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
-    writeIndex += sizeof(empty);
-    memcpy(&sendingBuffer[writeIndex], &end, sizeof(end));
-    writeIndex += sizeof(end);
-    if (-1 == write(fileDescriptor, sendingBuffer, writeIndex)) {
-        memset(sendingBuffer, 0, sizeof(sendingBuffer));
-        return;
+    sendEndOfPipe(fileDescriptor);
+    if (newSnack) {
+        sendSnackPosition(fileDescriptor, snacks.back());
     }
-    memset(sendingBuffer, 0, sizeof(sendingBuffer));
     usleep(50);
 }
 
@@ -213,5 +188,74 @@ void spawnFood(int spawnRate) {
         int randomX = rand() % boardWidth + 1;
         int randomY = rand() % boardLength + 1;
         snacks.emplace_back(new Food(Position(randomX, randomY)));
+        newSnack = true;
     }
+}
+
+void sendPlayerPosition(Player * player, int fileDescriptor) {
+    int writeIndex = 0;
+    int xShift = player->getX();
+    int yShift = player->getY();
+    bool end = false;
+    memcpy(&sendingBuffer[writeIndex], &player->mId, sizeof(player->mId));
+    writeIndex += sizeof(player->mId);
+    memcpy(&sendingBuffer[writeIndex], &xShift, sizeof(xShift));
+    writeIndex += sizeof(xShift);
+    memcpy(&sendingBuffer[writeIndex], &yShift, sizeof(yShift));
+    writeIndex += sizeof(yShift);
+    memcpy(&sendingBuffer[writeIndex], &player->mSize, sizeof(player->mSize));
+    writeIndex += sizeof(player->mSize);
+    memcpy(&sendingBuffer[writeIndex], &end, sizeof(end));
+    writeIndex += sizeof(end);
+    if (-1 == write(fileDescriptor, sendingBuffer, writeIndex)) {
+        memset(sendingBuffer, 0, sizeof(sendingBuffer));
+        return;
+    }
+    memset(sendingBuffer, 0, sizeof(sendingBuffer));
+}
+
+void sendEndOfPipe(int fileDescriptor) {
+    int empty = 0;
+    int writeIndex = 0;
+    bool end = true;
+    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
+    writeIndex += sizeof(empty);
+    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
+    writeIndex += sizeof(empty);
+    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
+    writeIndex += sizeof(empty);
+    memcpy(&sendingBuffer[writeIndex], &empty, sizeof(empty));
+    writeIndex += sizeof(empty);
+    memcpy(&sendingBuffer[writeIndex], &end, sizeof(end));
+    writeIndex += sizeof(end);
+    if (-1 == write(fileDescriptor, sendingBuffer, writeIndex)) {
+        memset(sendingBuffer, 0, sizeof(sendingBuffer));
+        return;
+    }
+    memset(sendingBuffer, 0, sizeof(sendingBuffer));
+}
+
+void sendSnackPosition(int fileDescriptor, Food * snack) {
+    if (snacks.size() == 0)
+        return;
+    int id = -1;
+    int writeIndex = 0;
+    bool end = false;
+    int xPos = snack->getX();
+    int yPos = snack->getY();
+    memcpy(&sendingBuffer[writeIndex], &id, sizeof(id));
+    writeIndex += sizeof(id);
+    memcpy(&sendingBuffer[writeIndex], &xPos, sizeof(xPos));
+    writeIndex += sizeof(xPos);
+    memcpy(&sendingBuffer[writeIndex], &yPos, sizeof(yPos));
+    writeIndex += sizeof(yPos);
+    memcpy(&sendingBuffer[writeIndex], &id, sizeof(id));
+    writeIndex += sizeof(id);
+    memcpy(&sendingBuffer[writeIndex], &end, sizeof(end));
+    writeIndex += sizeof(end);
+    if (-1 == write(fileDescriptor, sendingBuffer, writeIndex)) {
+        memset(sendingBuffer, 0, sizeof(sendingBuffer));
+        return;
+    }
+    memset(sendingBuffer, 0, sizeof(sendingBuffer));
 }
