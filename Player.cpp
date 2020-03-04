@@ -6,7 +6,7 @@
 
 Player::Player(int fd, Position position, int id) : Entity(position) {
     mFileDescriptor = fd;
-    mSize = 1000;
+    mSize = 5;
     mId = id;
     timeToLive = 10;
 }

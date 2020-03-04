@@ -71,7 +71,6 @@ int main(int argc, char **argv) {
     epoll_ctl(fd, EPOLL_CTL_ADD, servSock, &event);
 
     int resultCount = epoll_wait(fd, &event, 1, -1);
-    std::cout << resultCount << "\n";
 
     int xShift = 0;
     int yShift = 0;
@@ -84,12 +83,15 @@ int main(int argc, char **argv) {
                 addPlayer(client_fd);
 
                 Player *currentPlayer = players.back();
+                std::cout << snacks.size() << "\n";
                 for (Food * food : snacks) {
                     sendSnackPosition(currentPlayer->mFileDescriptor, food);
+                    usleep(1000);
                 }
                 memcpy(&sendingBuffer[0], &currentPlayer->mId, sizeof(currentPlayer->mId));
 
                 write(currentPlayer->mFileDescriptor, buffer, sizeof(currentPlayer->mId));
+                usleep(1000);
                 memset(buffer, 0, sizeof(buffer));
             }
         }
@@ -136,7 +138,7 @@ void sendPositions(int fileDescriptor) {
         usleep(15000);
     }
     sendEndOfPipe(fileDescriptor);
-    if (newSnack) {
+    if (newSnack && snacks.size() != 0) {
         sendSnackPosition(fileDescriptor, snacks.back());
     }
     usleep(50);
@@ -171,15 +173,17 @@ bool isEaten(Player *player) {
 }
 
 void eatFood(Player *player) {
-    for (auto it = snacks.begin(); it != snacks.end(); ++it) {
-        Food *food = *it;
-        if (food != nullptr) {
-            player->getX();
-            food->getX();
-            if ((((food->getX() - player->getX()) ^ 2) + ((food->getY() - player->getY()) ^ 2)) <= (player->mSize ^ 2)) {
-                player->mSize += 1;
-            }
+    auto it = snacks.begin();
+    Food *food;
+    while (it != snacks.end()) {
+    //for (auto it = snacks.begin(); it != snacks.end(); ++it) {
+        food = *it;
+        if ((((food->getX() - player->getX()) ^ 2) + ((food->getY() - player->getY()) ^ 2)) <= (player->mSize ^ 2)) {
+            player->mSize += 1;
+            it = snacks.erase(it);
         }
+        else
+            ++it;
     }
 }
 
@@ -236,8 +240,6 @@ void sendEndOfPipe(int fileDescriptor) {
 }
 
 void sendSnackPosition(int fileDescriptor, Food * snack) {
-    if (snacks.size() == 0)
-        return;
     int id = -1;
     int writeIndex = 0;
     bool end = false;
@@ -253,7 +255,8 @@ void sendSnackPosition(int fileDescriptor, Food * snack) {
     writeIndex += sizeof(id);
     memcpy(&sendingBuffer[writeIndex], &end, sizeof(end));
     writeIndex += sizeof(end);
-    if (-1 == write(fileDescriptor, sendingBuffer, writeIndex)) {
+    if (writeIndex != write(fileDescriptor, sendingBuffer, writeIndex)) {
+        std::cout << "XD\n";
         memset(sendingBuffer, 0, sizeof(sendingBuffer));
         return;
     }
